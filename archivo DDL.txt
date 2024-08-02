@@ -1,0 +1,55 @@
+create database taller3;
+\c taller3;
+
+create table categorias (
+	id serial primary key,
+	descripción varchar(45),
+	estado smallint
+);
+
+create table productos(
+	id serial primary key,
+	nombre varchar(45),
+	idCategoria int,
+	codigoBarras varchar(150),
+	precioVenta decimal(16,2),
+	cantidadStock int,
+	estado smallint,
+	constraint fk_categoria foreign key (idCategoria) references categorias(id)
+	
+);
+
+create	table clientes(
+	id varchar(20) primary key,
+	nombre varchar (40),
+	apellido varchar(40),
+	celular decimal(10,0),
+	direccion varchar(80),
+	correoElectronico varchar(70)
+);
+
+create table compras(
+	id serial primary key,
+	idCliente varchar(20),
+	fecha date,
+	medioPago char(1),
+	comentario varchar(300),
+	estado char(1),
+
+
+	constraint fk_idcliente foreign key (idCliente) references clientes(id)
+	
+);
+
+CREATE TABLE comprasProductos (
+    idCompra INT,
+    idProducto INT,
+    cantidad INT,
+    total DECIMAL(16,2),
+    estado smallint,
+    CONSTRAINT pk_comprasProductos PRIMARY KEY (idCompra, idProducto),
+    CONSTRAINT fk_idCompra_producto FOREIGN KEY (idCompra) REFERENCES compras(id),
+    CONSTRAINT fk_idproducto_comprasProductos FOREIGN KEY (idProducto) REFERENCES productos(id)
+);
+
+
